@@ -33,4 +33,19 @@ function Get-NetworkTCPProcess {
   $systemProcesses = Get-WmiObject Win32_Process | Select-Object Name,ProcessID,ParentProcessID,@{n='CreationDate';e={$_.ConvertToDateTime($_.CreationDate)}}
   $consolidatedInformation = @()
 
+  foreach ($communication in $systemTCPCommunication){
+    $communicationProcess = $systemProcessess | Where-Object ProcessID -eq $communication
+
+    $consolidatedInformation += [PSCustomObject] @{
+      'service.state' = $communication.State
+      'local.ip' = $communication.LocalAddress
+      'local.port' = $communication.LocalPort
+      'remote.ip' = $communication.RemoteAddress
+      'remote.port' = $communication.RemotePort
+      'process.name' = $$communicationProcess.Name
+      'process.id' = $communication.OwningProcess
+      'process.start' = $communicationProcess.CreationDate
+    }
+  }
+  return $consolidatedInformation
 }
