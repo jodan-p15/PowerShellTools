@@ -42,7 +42,7 @@ function Get-NetworkTCPProcess {
       'local.port' = $communication.LocalPort
       'remote.ip' = $communication.RemoteAddress
       'remote.port' = $communication.RemotePort
-      'process.name' = $$communicationProcess.Name
+      'process.name' = $communicationProcess.Name
       'process.id' = $communication.OwningProcess
       'process.start' = $communicationProcess.CreationDate
     }
