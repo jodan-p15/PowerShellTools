@@ -1,10 +1,9 @@
 <#
-  !!! IN DEVELOPMENT !!!
   .SYNOPSIS
     This tool gathers network Transmission Control Protocol (TCP) communications and system processes running then correlates the data.
 
   .DESCRIPTION
-    The tool with execute two (2) PowerShell commands;
+    This tool with execute two (2) PowerShell commands;
       Get-NetTCPConnection
       Get-WmiObject -Class Win32_Process
 
@@ -17,13 +16,13 @@
     The '@{n='CreationDate';e={$_.ConvertToDateTime($_.CreationDate)}}' table apart of the Get-WmiObject Win32_Process command is to covert epoch to Human readable format.
 
   .EXAMPLES
-    Format the information in a human readable format
+    Format the information in a human readable table format
       Get-NetworkTCPProcess | Format-Table
 
     Sort objects by local port and format the information in a human reable format
       Get-NetworkTCPProcess | Sort-Object Local.Port | Format-Table
 
-    Sort objects by local port and export to comma seperated value (CSV) file
+    Sort objects by local port and export to Comma-Separated Value (CSV) file
       Get-NetworkTCPProcess | Sort-Object Local.Port | Export-Csv example.csv
     
 #>
