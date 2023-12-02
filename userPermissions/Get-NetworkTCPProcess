@@ -24,7 +24,6 @@
 
     Sort objects by local port and export to Comma-Separated Value (CSV) file
       Get-NetworkTCPProcess | Sort-Object Local.Port | Export-Csv example.csv
-    
 #>
 
 function Get-NetworkTCPProcess {
