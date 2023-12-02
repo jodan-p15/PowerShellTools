@@ -2,7 +2,7 @@
     .SYNOPSIS
         This tool gathers network User Datagram Protocol (UDP) information and system processes running then correlates the data.
     .DESCRIPTION
-        The tool with execute two (2) PowerShell commands;
+        This tool with execute two (2) PowerShell commands;
             Get-NetUDPEndpoint
             Get-WmiObject -Class Win32_Process
     .NOTES
