@@ -8,8 +8,15 @@ $combinedIPAddresses = $communication.LocalIP + $communication.RemoteIP
 
 $assets = $combinedIPAddresses | Select -Unique
 
+$informationTable@()
+Foreach ($asset in $assets){
+   $results = Resolve-DNSName -Name $asset
+   $informationTable += [PSCustomObject] {
+      'HostName' = $results.<hostname>
+      'DomainName' = $results.<domainname>
+   }
+}
+return $informationTable
 
-Resolve-DNSName -Name $asset
 
 consolidatedResults @()
-
