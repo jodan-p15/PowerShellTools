@@ -24,7 +24,6 @@
 
     Sort objects by local port and export to comma seperated value (CSV) file
       Get-NetworkUDPProcess | Sort-Object Local.Port | Export-Csv example.csv
-    
 #>
 
 function Get-NetworkUDPProcess {
