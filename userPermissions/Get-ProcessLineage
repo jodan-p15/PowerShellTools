@@ -28,8 +28,7 @@
 function Get-ProcessLineage{
     [CmdletBinding()]
     param(
-        [Parameter(Position=0,mandatory=$true)]
-        [int] $Id
+        [Parameter(Mandatory)] [int] $Id
     )
 
     $systemProcesses = Get-WmiObject -Class Win32_Process | Select-Object ProcessName,ProcessId,ExecutablePath,ParentProcessId,@{n='CreationDate';e={$_.ConvertToDateTime($_.CreationDate)}}
