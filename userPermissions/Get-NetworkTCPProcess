@@ -10,7 +10,8 @@
             Implementing host-based firewall
             Investigating anomalous and suspicious
             Troubleshooting host network communication
-        The '@{n='CreationDate';e={$_.ConvertToDateTime($_.CreationDate)}}' table apart of the Get-WmiObject Win32_Process command is to covert epoch to Human readable format.
+        The following converts time to human readable format:
+        '@{n='CreationDate';e={$_.ConvertToDateTime($_.CreationDate)}}'
     .EXAMPLE
         Format the information in a human readable table format
             Get-NetworkTCPProcess | Format-Table
