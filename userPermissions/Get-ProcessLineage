@@ -1,0 +1,51 @@
+<#
+    .SYNOPSIS
+        This tool performs process lineage.
+
+    .DESCRIPTION
+        This tool with execute two (2) PowerShell commands;
+            Get-NetTCPConnection
+            Get-WmiObject -Class Win32_Process
+
+    .NOTES
+        This tool will assist with:
+            Understanding what process executed what process  
+            Troubleshooting processes
+            Investigating anomalous processes 
+      
+            The '@{n='CreationDate';e={$_.ConvertToDateTime($_.CreationDate)}}' table apart of the Get-WmiObject Win32_Process command is to covert epoch to Human readable format.
+    
+    .EXAMPLE
+        Format the information in a human readable table format.
+            Get-ProcessLineage -Id 1337
+
+        Sort objects by local port and format the information in a human reable format.
+            Get-ProcessLineage -Id 1337 | Format-Table
+
+        Sort objects by local port and export to Comma-Separated Value (CSV) file.
+            Get-ProcessLineage -Id 1337 | Export-Csv example.csv
+#>
+
+function Get-ProcessLineage{
+    [CmdletBinding()]
+    param(
+        [Parameter(Position=0,mandatory=$true)]
+        [int] $Id
+    )
+
+    $systemProcesses = Get-WmiObject -Class Win32_Process | Select-Object ProcessName,ProcessId,ExecutablePath,ParentProcessId,@{n='CreationDate';e={$_.ConvertToDateTime($_.CreationDate)}}
+    $selectProcess = $systemProcesses | Where-Object ProcessID -eq $Id
+    $consolidatedInformation = @()
+
+    while($null -ne $selectProcess.ProcessId){
+        $consolidatedInformation += [PSCustomObject] @{
+            'Process.Name' = $selectProcess.ProcessName
+            'Process.Id' = $selectProcess.ProcessID
+            'Process.Path' = $selectProcess.ExecutablePath
+            'Process.Parent.Id' = $selectProcess.ParentProcessId
+            'Creation.Date' = $selectProcess.CreationDate
+        }
+        $selectProcess = $systemProcesses | Where-Object ProcessID -eq $selectProcess.ParentProcessId
+    }
+    return $consolidatedInformation
+}
