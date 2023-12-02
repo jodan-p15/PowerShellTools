@@ -34,7 +34,7 @@ function Get-NetworkTCPProcess {
   $consolidatedInformation = @()
 
   foreach ($communication in $systemTCPCommunication){
-    $communicationProcess = $systemProcesses | Where-Object ProcessID -eq $communication
+    $communicationProcess = $systemProcesses | Where-Object ProcessID -eq $communication.OwningProcess
 
     $consolidatedInformation += [PSCustomObject] @{
       'service.state' = $communication.State
