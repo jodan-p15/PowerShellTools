@@ -31,17 +31,17 @@ function Get-ProcessLineage{
         [Parameter(Mandatory)] [int] $Id
     )
 
-    $systemProcesses = Get-WmiObject -Class Win32_Process | Select-Object ProcessName,ProcessId,ExecutablePath,ParentProcessId,@{n='CreationDate';e={$_.ConvertToDateTime($_.CreationDate)}}
+    $systemProcesses = Get-WmiObject -Class Win32_Process
     $selectProcess = $systemProcesses | Where-Object ProcessID -eq $Id
     $consolidatedInformation = @()
 
     while($null -ne $selectProcess.ProcessId){
         $consolidatedInformation += [PSCustomObject] @{
-            'Process.Name' = $selectProcess.ProcessName
-            'Process.Id' = $selectProcess.ProcessID
-            'Process.Path' = $selectProcess.ExecutablePath
-            'Process.Parent.Id' = $selectProcess.ParentProcessId
-            'Creation.Date' = $selectProcess.CreationDate
+            'ProcessName' = $selectProcess.ProcessName
+            'ProcessId' = $selectProcess.ProcessID
+            'ProcessPath' = $selectProcess.ExecutablePath
+            'ProcessParentId' = $selectProcess.ParentProcessId
+            'CreationDate' = ($selectProcess | Select-Object @{n='CreationDate';e={$_.ConvertToDateTime($_.CreationDate)}}).CreationDate
         }
         $selectProcess = $systemProcesses | Where-Object ProcessID -eq $selectProcess.ParentProcessId
     }
