@@ -11,7 +11,7 @@
             Investigating anomalous and suspicious
             Troubleshooting host network communication
         The following converts time to human readable format:
-        @{n='CreationDate';e={$_.ConvertToDateTime($_.CreationDate)}}'
+        '@{n='CreationDate';e={$_.ConvertToDateTime($_.CreationDate)}}'
     .EXAMPLE
         Format the information in a human readable format
             Get-NetworkUDPProcess | Format-Table
