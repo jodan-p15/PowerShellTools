@@ -3,8 +3,7 @@
         This tool performs process lineage.
 
     .DESCRIPTION
-        This tool with execute two (2) PowerShell commands;
-            Get-NetTCPConnection
+        This tool with execute one (1) PowerShell commands;
             Get-WmiObject -Class Win32_Process
 
     .NOTES
