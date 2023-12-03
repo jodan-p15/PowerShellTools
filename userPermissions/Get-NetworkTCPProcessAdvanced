@@ -9,7 +9,7 @@
     .NOTES
         This tool will assist with:
             Implementing host-based firewall
-            Investigating anomalous and suspicious
+            Investigating anomalous and suspicious activity
             Troubleshooting host network communication
         The following converts time to human readable format:
         '@{n='CreationDate';e={$_.ConvertToDateTime($_.CreationDate)}}'
