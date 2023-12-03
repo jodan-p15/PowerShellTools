@@ -1,0 +1,55 @@
+<#
+    .SYNOPSIS
+        This tool gathers network Transmission Control Protocol (TCP) communications, gathers system processes running and performs a name query of IP Address then correlates the data.
+    .DESCRIPTION
+        This tool with execute three (3) PowerShell commands;
+            Get-NetTCPConnection
+            Get-WmiObject -Class Win32_Process
+            Resolve-DNSName
+    .NOTES
+        This tool will assist with:
+            Implementing host-based firewall
+            Investigating anomalous and suspicious
+            Troubleshooting host network communication
+        The following converts time to human readable format:
+        '@{n='CreationDate';e={$_.ConvertToDateTime($_.CreationDate)}}'
+    .EXAMPLE
+        Format the information in a human readable table format
+            Get-NetworkTCPProcessAdvanced | Format-Table
+        Sort objects by local port and format the information in a human reable format
+            Get-NetworkTCPProcessAdvanced | Sort-Object Local.Port | Format-Table
+        Sort objects by local port and export to Comma-Separated Value (CSV) file
+            Get-NetworkTCPProcessAdvanced | Sort-Object Local.Port | Export-Csv example.csv
+#>
+function Get-NetworkTCPProcessAdvanced {
+    $systemTCPCommunication = Get-NetTCPConnection
+    $systemProcesses = Get-WmiObject Win32_Process | Select-Object Name,ProcessID,ParentProcessID,@{n='CreationDate';e={$_.ConvertToDateTime($_.CreationDate)}}
+    $uniqueIPList = ($systemTCPCommunication.localaddress + $systemTCPCommunication.remoteaddress) | Select-Object -Unique
+    $hostNameTable = @()
+    foreach ($uniqueIP in $uniqueIPList){
+        $result = Resolve-DNSName -Name $uniqueIP -ErrorAction SilentlyContinue -QuickTimeout
+        if($null -ne $result){
+            $hostNameTable += [PSCustomObject] @{
+                'IPAddress' = $uniqueIP
+                'HostName' = $result.NameHost
+            }
+        }
+    }
+    $consolidatedInformation = @()
+    foreach ($communication in $systemTCPCommunication){
+        $communicationProcess = $systemProcesses | Where-Object ProcessID -eq $communication.OwningProcess
+        $consolidatedInformation += [PSCustomObject] @{
+            'ServiceState' = $communication.State
+            'LocalIp' = $communication.LocalAddress
+            'LocalHostName' = ($hostNameTable | Where-Object IPAddress -eq $communication.LocalAddress).HostName
+            'LocalPort' = $communication.LocalPort
+            'RemoteIp' = $communication.RemoteAddress
+            'RemoteHostName' = ($hostNameTable | Where-Object IPAddress -eq $communication.RemoteAddress).HostName
+            'RemotePort' = $communication.RemotePort
+            'ProcessName' = $communicationProcess.Name
+            'ProcessID' = $communication.OwningProcess
+            'ProcessStart' = $communicationProcess.CreationDate
+        }
+    }
+    return $consolidatedInformation
+}
