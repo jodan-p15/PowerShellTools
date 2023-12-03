@@ -27,13 +27,13 @@ function Get-NetworkUDPProcess {
     foreach ($communication in $systemUDPCommunication){
         $communicationProcess = $systemProcesses | Where-Object ProcessID -eq $communication.OwningProcess
         $consolidatedInformation += [PSCustomObject] @{
-            'local.ip' = $communication.LocalAddress
-            'local.port' = $communication.LocalPort
-            'remote.ip' = $communication.RemoteAddress
-            'remote.port' = $communication.RemotePort
-            'process.name' = $communicationProcess.Name
-            'process.id' = $communication.OwningProcess
-            'process.start' = $communicationProcess.CreationDate
+            'LocalIp' = $communication.LocalAddress
+            'LocalPort' = $communication.LocalPort
+            'RemoteIP' = $communication.RemoteAddress
+            'RemotePort' = $communication.RemotePort
+            'ProcessName' = $communicationProcess.Name
+            'ProcessID' = $communication.OwningProcess
+            'ProcessStart' = $communicationProcess.CreationDate
         }
     }
     return $consolidatedInformation
