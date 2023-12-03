@@ -27,7 +27,7 @@ function Get-NetworkUDPProcess {
     foreach ($communication in $systemUDPCommunication){
         $communicationProcess = $systemProcesses | Where-Object ProcessID -eq $communication.OwningProcess
         $consolidatedInformation += [PSCustomObject] @{
-            'LocalIp' = $communication.LocalAddress
+            'LocalIP' = $communication.LocalAddress
             'LocalPort' = $communication.LocalPort
             'RemoteIP' = $communication.RemoteAddress
             'RemotePort' = $communication.RemotePort
