@@ -1,0 +1,8 @@
+create function for:
+   persistent
+     scheduled tasks
+     registry keys
+
+   process injection
+   thread injection
+   dll injection
