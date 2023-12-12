@@ -6,3 +6,8 @@ create function for:
    process injection
    thread injection
    dll injection
+
+Add elevated privileges for
+   network process to include who started process
+   processes lineage with who started process
+   
