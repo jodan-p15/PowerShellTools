@@ -3,3 +3,6 @@ create function that combines multiple objects into 1 table.
 1. Import or ingest 1 or more columns from multiple different objects and store as variables.
 2. find a way correlate objects together
 3. combined in powershell custome object
+4. return results
+
+create function that ingest security events for windows events.
